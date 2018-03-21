@@ -18,7 +18,7 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 
 **Note this must be for a non-root user use `adduser` on the target machine to create a user
 
-** you will also need to ensure this user is part of the sudo group
+**You will also need to ensure this user is part of the sudo group
 
 `usermod -aG sudo username`
 
