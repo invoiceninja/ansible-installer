@@ -15,6 +15,10 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 
 `brew install ansible`
 
+* Install the required roles
+
+`ansible-galaxy install jdauphant.nginx`
+
 * run the playbook and wait for it to complete
 
 `ansible-playbook localvm.yml --ask-become`
