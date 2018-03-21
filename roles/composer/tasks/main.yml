@@ -1,0 +1,13 @@
+# tasks file for composer
+---
+- include: install.yml
+  tags:
+    - configuration
+    - composer
+    - composer-install
+
+- include: composer-json.yml
+  tags:
+    - configuration
+    - composer
+    - composer-composer-json

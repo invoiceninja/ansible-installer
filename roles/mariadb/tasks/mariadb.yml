@@ -1,0 +1,15 @@
+---
+- name: Mariadb | Install MariaDB Server
+  apt: name=mariadb-server
+       state=latest
+       update_cache=yes
+  sudo: true
+- name: Create readwrite user
+  mysql_user: name=invoiceninja host="%" password=adminpwd priv=*.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP state=present
+- name: Restart mysql service
+  service: name=mysql state=restarted
+- name: Create database
+  mysql_db:
+    name: invoiceninja
+    state: present
+  

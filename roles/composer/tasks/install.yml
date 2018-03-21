@@ -1,0 +1,33 @@
+# tasks file for composer
+---
+- name: install
+  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir={{ composer_install_dir }}
+  args:
+    creates: "{{ composer_install_dir }}/composer"
+  tags:
+    - composer-install-download
+
+- name: rename - composer.phar -> composer
+  command: mv {{ composer_install_dir }}/composer.phar {{ composer_install_dir }}/composer
+  args:
+    creates: "{{ composer_install_dir }}/composer"
+  tags:
+    - composer-install-move
+
+- name: check permissions
+  file:
+    path: "{{ composer_install_dir }}/composer"
+    owner: root
+    group: root
+    mode: 0755
+  tags:
+    - composer-install-permissions
+
+- name: update to the latest version
+  command: >
+    {{ composer_install_dir }}/composer self-update
+  register: composer_self_update
+  changed_when: "'Updating to version' in composer_self_update.stderr"
+  when: composer_self_update
+  tags:
+    - composer-install-self-update

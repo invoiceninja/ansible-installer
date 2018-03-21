@@ -1,0 +1,132 @@
+# file: localvm.yml
+- hosts: localvm
+  user: david
+  become: yes
+  become_user: root
+  become_method: sudo
+  gather_facts: yes
+  pre_tasks:
+  - name: Set firewall default policy
+    ufw: state=enabled policy=reject
+  - name: Allow ssh on port 22
+    ufw: rule=allow port=22
+  - name: Allow traffic to hit port 80
+    ufw: rule=allow port=80
+  roles:
+  - basic
+  - php
+  - mariadb
+  - role: jdauphant.nginx
+    nginx_user: "www-data"
+    nginx_http_params:
+     - client_max_body_size 30M
+    nginx_events_params:
+   #  - worker_processes 2
+     - worker_connections 1024
+     - multi_accept on
+    nginx_sites:
+     invoiceninja:
+         - listen 80
+         #- listen 443 ssl
+         - server_name _
+         - root /srv/www/invoiceninja.com/public
+         #- access_log /srv/www/invoiceninja.com/logs/invoice.ninja.access.log
+         #- error_log /srv/www/invoiceninja.com/logs/invoice.ninja.error.log
+         - index index.php index.html index.htm 
+         - location / { try_files $uri $uri/ =404; }
+         - if (!-e $request_filename) { rewrite ^(.+)$ /index.php?q=$1 last; }
+         - location ~* /logo/.*\.php$ { return 503; }
+         - |
+           location ~ \.php$ {
+           include snippets/fastcgi-php.conf;
+           fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+           }
+         - location ~ /\.ht { deny all; }       
+  - role: logrotate
+    logrotate_scripts:
+      - name: nginx
+        path: /var/log/nginx/*.log
+        options:
+          - daily
+          - rotate 7
+          - missingok
+          - compress
+          - delaycompress
+          - copytruncate
+        scripts:
+          postrotate: "[ -s /run/nginx.pid ] && kill -USR1 `cat /run/nginx.pid`"
+  - role: logrotate
+    logrotate_scripts:
+      - name: invoice-ninja
+        path: /srv/www/invoiceninja.com/logs/*.log
+        options:
+          - daily
+          - rotate 7
+          - missingok
+          - compress
+          - delaycompress
+          - copytruncate
+        scripts:
+          postrotate: "[ -s /run/nginx.pid ] && kill -USR1 `cat /run/nginx.pid`"
+  - role: logrotate
+    logrotate_scripts:
+      - name: var-log
+        path: /var/log/*.log
+        options:
+          - daily
+          - rotate 7
+          - missingok
+          - compress
+          - delaycompress
+          - copytruncate
+  post_tasks:
+    - name: Modify PHP.INI - set memory limit
+      lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp='(.*)memory_limit =' line='memory_limit = 256M'
+    - name: Modify PHP.INI - set POST FILE LIMIT SIZE
+      lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp='(.*)post_max_size =' line='post_max_size = 30M'
+    - name: Modify PHP pool variable - slowlog
+      lineinfile: dest=/etc/php/7.0/fpm/pool.d/www.conf  regexp='(.*);slowlog = log/$pool.log.slow' line='slowlog = /var/log/$pool-php-slow.log'
+    - name: Modify PHP pool variable - slowlog enable
+      lineinfile: dest=/etc/php/7.0/fpm/pool.d/www.conf  regexp='(.*);request_slowlog_timeout = 0' line='request_slowlog_timeout = 5s'
+    - name: Clone Invoice Ninja Repo
+      git: >
+        dest=/srv/www/invoiceninja.com
+        repo=https://github.com/invoiceninja/invoiceninja.git
+        update=yes
+      #sudo: yes
+      #sudo_user: www-data
+    - name: Create Root Path for web directory
+      file: path=/srv/www/invoiceninja.com/logs state=directory
+    - name: Create Access log
+      copy:
+        content: ""
+        dest: /srv/www/invoiceninja.com/logs/invoice.ninja.access.log
+        force: no
+        group: www-data
+        owner: www-data
+        mode: 664
+    - name: Create Error log
+      copy:
+        content: ""
+        dest: /srv/www/invoiceninja.com/logs/invoice.ninja.error.log
+        force: no
+        group: www-data
+        owner: www-data
+        mode: 664
+    - name: Run composer install
+      composer:
+        command: install
+        working_dir: /srv/www/invoiceninja.com
+    - name: set www-data as owner of storage/
+      file: dest=/srv/www/invoiceninja.com/storage owner=www-data group=www-data recurse=yes
+    - name: set www-data as owner of invoiceninja.com/
+      file: dest=/srv/www/invoiceninja.com owner=www-data group=www-data recurse=no
+    - name: set www-data as owner of vendor/
+      file: dest=/srv/www/invoiceninja.com/vendor owner=www-data group=www-data recurse=yes mode=0775
+    - name: set www-data as owner of bootstrap/
+      file: dest=/srv/www/invoiceninja.com/bootstrap owner=www-data group=www-data recurse=yes mode=0775
+    - name: restart nginx
+      service: name=nginx state=restarted
+    - name: restart php
+      service: name=php7.0-fpm state=restarted
+ 

@@ -1,0 +1,8 @@
+---
+- name: basic | Install basic utilitis
+  apt: name={{item}} state=latest
+  with_items:
+       - software-properties-common
+       - composer
+       - git
+       - python-mysqldb

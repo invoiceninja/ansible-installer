@@ -1,0 +1,63 @@
+# tasks file for composer
+---
+- name: create configuration directory
+  file:
+    path: "{{ item.dest | dirname }}"
+    state: directory
+  with_items: "{{ composer_composer_json_map }}"
+  become: true
+  become_user: "{{ item.owner | default('root') }}"
+  tags:
+    - composer-composer-json-copy
+
+- name: copy composer.json files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: "{{ composer_composer_json_map }}"
+  become: true
+  become_user: "{{ item.owner | default('root') }}"
+  tags:
+    - composer-composer-json-copy
+
+- name: set github-oauth token
+  command: >
+    {{ composer_install_dir }}/composer config github-oauth.github.com {{ item.github_oauth }}
+  args:
+    chdir: "{{ item.dest | dirname }}"
+  with_items: "{{ composer_composer_json_map }}"
+  when: item.github_oauth is defined
+  changed_when: false
+  become: true
+  become_user: "{{ item.owner | default('root') }}"
+  tags:
+    - composer-composer-json-configure
+
+- name: run composer install
+  command: >
+    {{ composer_install_dir }}/composer install --no-ansi --no-progress --no-interaction
+    {{ item.options if item.options is defined else '--prefer-dist' }}
+  args:
+    chdir: "{{ item.dest | dirname }}"
+  register: composer_composer_json_install
+  with_items: "{{ composer_composer_json_map }}"
+  changed_when: "'Nothing to install or update' not in composer_composer_json_install.stderr"
+  become: true
+  become_user: "{{ item.owner | default('root') }}"
+  tags:
+    - composer-composer-json-install
+
+- name: run composer update
+  command: >
+    {{ composer_install_dir }}/composer update --no-ansi --no-progress --no-interaction
+    {{ item.options if item.options is defined else '--prefer-dist' }}
+  args:
+    chdir: "{{ item.dest | dirname }}"
+  register: composer_composer_json_update
+  with_items: "{{ composer_composer_json_map }}"
+  when: item.run_update is defined and item.run_update
+  changed_when: "'Nothing to install or update' not in composer_composer_json_update.stderr"
+  become: true
+  become_user: "{{ item.owner | default('root') }}"
+  tags:
+    - composer-composer-json-update
