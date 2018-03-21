@@ -9,6 +9,13 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 
 `sudo apt-get install python ssh`
 
+* Copy your public SSH key onto the target server on Mac this can be found here:
+
+`~/.ssh/id_rsa.pub`
+
+* The target location will be **Note this must be for a non-root user use `adduser` on the target machine to create a user
+`~/.ssh/authorized_keys`
+
 * Edit localvm.yml and change the user on line 3 from david to another sudo enabled user
 
 * On your local machine install ansible
@@ -23,12 +30,6 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 ```yaml
 [ninja]
 ip_address_or_host_name_here
-```
-* if you are not using ssh keys, you'll need to define the user/password for the host like this
-
-```yaml
-[ninja]
-ip_address_or_host_name_here ansible_connection=ssh ansible_ssh_user=usermame ansible_ssh_pass=password
 ```
 
 * Install the required roles
