@@ -24,6 +24,12 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 [ninja]
 ip_address_or_host_name_here
 ```
+* if you are not using ssh keys, you'll need to define the user/password for the host like this
+
+```yaml
+[ninja]
+ip_address_or_host_name_here ansible_connection=ssh ansible_ssh_user=usermame ansible_ssh_pass=password
+```
 
 * Install the required roles
 
