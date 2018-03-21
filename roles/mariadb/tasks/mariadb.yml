@@ -5,11 +5,11 @@
        update_cache=yes
   sudo: true
 - name: Create readwrite user
-  mysql_user: name=invoiceninja host="%" password=adminpwd priv=*.*:ALL,GRANT state=present
+  mysql_user: name="{{ db_user }}" host="%" password="{{ db_password }}" priv=*.*:ALL,GRANT state=present
 - name: Restart mysql service
   service: name=mysql state=restarted
 - name: Create database
   mysql_db:
-    name: invoiceninja
+    name: "{{ db_name }}"
     state: present
   

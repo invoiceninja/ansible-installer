@@ -1,0 +1,10 @@
+---
+# user defined variables
+
+# sudo user on target machine
+user: david
+
+# target machine DB credentials
+db_user: invoiceninja
+db_password: adminpwd
+db_name: invoiceninja
