@@ -120,7 +120,7 @@
     - name: set www-data as owner of storage/
       file: dest=/srv/www/invoiceninja.com/storage owner=www-data group=www-data recurse=yes
     - name: set www-data as owner of invoiceninja.com/
-      file: dest=/srv/www/invoiceninja.com owner=www-data group=www-data recurse=no
+      file: dest=/srv/www/invoiceninja.com owner=www-data group=www-data recurse=yes
     - name: set www-data as owner of vendor/
       file: dest=/srv/www/invoiceninja.com/vendor owner=www-data group=www-data recurse=yes mode=0775
     - name: set www-data as owner of bootstrap/
