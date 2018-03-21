@@ -20,8 +20,10 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 `sudo vim /etc/ansibles/hosts`
 
 * host file should look like this
-`[ninja]
- ip_address_or_host_name_here`
+```yaml
+[ninja]
+ip_address_or_host_name_here
+```
 
 * Install the required roles
 
