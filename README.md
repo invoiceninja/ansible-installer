@@ -13,8 +13,14 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 
 `~/.ssh/id_rsa.pub`
 
-* The target location will be **Note this must be for a non-root user use `adduser` on the target machine to create a user
+* The target location will be 
 `~/.ssh/authorized_keys`
+
+**Note this must be for a non-root user use `adduser` on the target machine to create a user
+
+** you will also need to ensure this user is part of the sudo group
+
+`usermod -aG sudo username`
 
 * Edit localvm.yml and change the user on line 3 from david to another sudo enabled user
 
