@@ -3,7 +3,7 @@ Install Invoice Ninja using ansible
 
 This is a crude set of ansible tasks that will take a clean Ubuntu server and install Invoice Ninja and all of its dependencies.
 
-# steps to install
+# Steps to install
 
 * First you need to ensure python and ssh are installed on the target Ubuntu machine.
 
@@ -32,7 +32,7 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 
 `sudo vim /etc/ansibles/hosts`
 
-* host file should look like this
+* Host file should look like this
 ```yaml
 [ninja]
 ip_address_or_host_name_here
@@ -42,7 +42,19 @@ ip_address_or_host_name_here
 
 `ansible-galaxy install jdauphant.nginx`
 
-* run the playbook and wait for it to complete
+* Configure variables in vars/vars.yml
+
+```
+# sudo user on target machine
+user: david
+
+# target machine DB credentials
+db_user: invoiceninja
+db_password: adminpwd
+db_name: invoiceninja
+```
+
+* Run the playbook and wait for it to complete
 
 `ansible-playbook localvm.yml --ask-become`
 
