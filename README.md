@@ -15,6 +15,14 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 
 `brew install ansible`
 
+* Create a host file for ansible on your local machine
+
+`sudo vim /etc/ansibles/hosts`
+
+* host file should look like this
+`[ninja]
+ ip_address_or_host_name_here`
+
 * Install the required roles
 
 `ansible-galaxy install jdauphant.nginx`
