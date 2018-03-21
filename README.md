@@ -21,6 +21,6 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 
 ## Issues
 * MariaDB is setup with a hardcoded username and password, you can change this in roles/mariadb/mariadb.yml
-* NGINX is setup with the _ server_name which is just a catch all, you may want to configure for your needs
+* NGINX is setup with the _ server_name which is just a catch all, you may want to configure for your needs (edit localvm.yml)
 * http:// only support so far... https:// is on the todo if there is demand
 * I am by no means an expert with ansible, if you see an issue, please PR.
