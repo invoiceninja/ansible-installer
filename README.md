@@ -28,8 +28,6 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 
 ***
 
-> Edit localvm.yml and change the user on line 3 from david to another sudo enabled user
-
 > On your local machine install ansible
 
 `brew install ansible`
