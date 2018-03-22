@@ -1,6 +1,8 @@
 # ansible-installer
 Install Invoice Ninja using ansible
+
 ---
+
 This is a crude set of ansible tasks that will take a clean Ubuntu server and install Invoice Ninja and all of its dependencies.
 
 # Steps to install
@@ -16,9 +18,13 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 > The target location will be 
 `~/.ssh/authorized_keys`
 
+***
+
 > **Note this must be for a non-root user use `adduser` on the target machine to create a user
 
 > **You will also need to ensure this user is part of the sudo group
+
+***
 
 `usermod -aG sudo username`
 
@@ -58,6 +64,8 @@ db_name: invoiceninja
 > Run the playbook and wait for it to complete
 
 `ansible-playbook localvm.yml --ask-become`
+
+***
 
 ## Issues
 * MariaDB is setup with a hardcoded username and password, you can change this in roles/mariadb/mariadb.yml
