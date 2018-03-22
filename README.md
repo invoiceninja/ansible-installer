@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/invoiceninja/ansible-installer.png?branch=master)](https://travis-ci.org/invoiceninja/ansible-installer)
 # ansible-installer
 
 Install Invoice Ninja using ansible
