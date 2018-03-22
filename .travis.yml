@@ -15,7 +15,7 @@ install:
 
 script:
   # Check the role/playbook's syntax.
-  - ansible-playbook -i localvm.yml --syntax-check
+  - ansible-playbook -i tests/inventory localvm.yml --syntax-check
   
   # Run the role/playbook with ansible-playbook.
-  - "ansible-playbook -i localvm.yml --connection=local --sudo"
+  - "ansible-playbook -i tests/inventory localvm.yml --connection=local --sudo"
