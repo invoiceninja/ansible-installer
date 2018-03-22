@@ -24,9 +24,9 @@ This is a crude set of ansible tasks that will take a clean Ubuntu server and in
 
 > **You will also need to ensure this user is part of the sudo group
 
-***
-
 `usermod -aG sudo username`
+
+***
 
 > Edit localvm.yml and change the user on line 3 from david to another sudo enabled user
 
