@@ -1,48 +1,49 @@
 # ansible-installer
 Install Invoice Ninja using ansible
-
+---
 This is a crude set of ansible tasks that will take a clean Ubuntu server and install Invoice Ninja and all of its dependencies.
 
 # Steps to install
 
-* First you need to ensure python and ssh are installed on the target Ubuntu machine.
+> First you need to ensure python and ssh are installed on the target Ubuntu machine.
 
 `sudo apt-get install python ssh`
 
-* Copy your public SSH key onto the target server on Mac this can be found here:
+> Copy your public SSH key onto the target server on Mac this can be found here:
 
 `~/.ssh/id_rsa.pub`
 
-* The target location will be 
+> The target location will be 
 `~/.ssh/authorized_keys`
 
-**Note this must be for a non-root user use `adduser` on the target machine to create a user
+> **Note this must be for a non-root user use `adduser` on the target machine to create a user
 
-**You will also need to ensure this user is part of the sudo group
+> **You will also need to ensure this user is part of the sudo group
 
 `usermod -aG sudo username`
 
-* Edit localvm.yml and change the user on line 3 from david to another sudo enabled user
+> Edit localvm.yml and change the user on line 3 from david to another sudo enabled user
 
-* On your local machine install ansible
+> On your local machine install ansible
 
 `brew install ansible`
 
-* Create a host file for ansible on your local machine
+> Create a host file for ansible on your local machine
 
 `sudo vim /etc/ansibles/hosts`
 
-* Host file should look like this
+> Host file should look like this
+
 ```yaml
 [ninja]
 ip_address_or_host_name_here
 ```
 
-* Install the required roles
+> Install the required roles
 
 `ansible-galaxy install jdauphant.nginx`
 
-* Configure variables in vars/vars.yml
+> Configure variables in vars/vars.yml
 
 ```
 # sudo user on target machine
@@ -54,7 +55,7 @@ db_password: adminpwd
 db_name: invoiceninja
 ```
 
-* Run the playbook and wait for it to complete
+> Run the playbook and wait for it to complete
 
 `ansible-playbook localvm.yml --ask-become`
 
