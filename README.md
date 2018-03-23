@@ -11,7 +11,7 @@ This is a crude set of ansible roles that will take a clean Ubuntu (16.04 LTS wa
 
 `sudo apt-get install python ssh`
 
-> Copy your public SSH key onto the target server on Mac this can be found here:
+> Copy your public SSH key onto the target server - on Mac this can be found here:
 
 `~/.ssh/id_rsa.pub`
 
