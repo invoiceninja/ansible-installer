@@ -28,7 +28,7 @@ This is a crude set of ansible roles that will take a clean Ubuntu (16.04 LTS wa
 
 ***
 
-> On your local machine install ansible
+> On your local machine install ansible (This script was tested with ansible 2.5)
 
 `brew install ansible`
 

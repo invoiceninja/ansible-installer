@@ -2,7 +2,7 @@
 - name: Mariadb | Install MariaDB Server
   apt: name=mariadb-server
        state=latest
-       update_cache=yes
+       update_cache=no
   sudo: true
 - name: Create readwrite user
   mysql_user: name="{{ db_user }}" host="%" password="{{ db_password }}" priv=*.*:ALL,GRANT state=present

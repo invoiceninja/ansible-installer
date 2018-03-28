@@ -8,12 +8,16 @@
   vars_files:
     - vars/vars.yml
   pre_tasks:
+  - name: apt-get clean
+    shell: apt-get clean
   - name: Set firewall default policy
     ufw: state=enabled policy=reject
   - name: Allow ssh on port 22
     ufw: rule=allow port=22
   - name: Allow traffic to hit port 80
     ufw: rule=allow port=80
+  - name: Allow traffic to hit port 443
+    ufw: rule=allow port=443
   roles:
   - basic
   - php
@@ -28,9 +32,13 @@
      - multi_accept on
     nginx_sites:
      invoiceninja:
-         - listen 80
-         #- listen 443 ssl
-         - server_name _
+         #- listen 80
+         - listen 443 ssl
+         - ssl_protocols TLSv1 TLSv1.1 TLSv1.2
+         - ssl_ciphers HIGH:!aNULL:!MD5
+         - server_name {{ server_name }}
+         - ssl_certificate /etc/nginx/ssl/{{ server_name }}/fullchain.pem
+         - ssl_certificate_key /etc/nginx/ssl/{{ server_name }}/privkey.pem
          - root /srv/www/invoiceninja.com/public
          #- access_log /srv/www/invoiceninja.com/logs/invoice.ninja.access.log
          #- error_log /srv/www/invoiceninja.com/logs/invoice.ninja.error.log
@@ -43,7 +51,10 @@
            include snippets/fastcgi-php.conf;
            fastcgi_pass unix:/run/php/php7.0-fpm.sock;
            }
-         - location ~ /\.ht { deny all; }       
+         - location ~ /\.ht { deny all; }
+  - role: stackbuilders.certbot
+    certbot_domains: "{{ server_name }}"
+    certbot_email: "{{ letsencrypt_email }}"
   - role: logrotate
     logrotate_scripts:
       - name: nginx
