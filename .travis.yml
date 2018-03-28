@@ -10,7 +10,7 @@ install:
   # Install Ansible.
   - pip install ansible
   - ansible-galaxy install jdauphant.nginx
-
+  - ansible-galaxy install stackbuilders.certbot
 script:
   # Check the role/playbook's syntax.
   - ansible-playbook -i tests/inventory localvm.yml --syntax-check
