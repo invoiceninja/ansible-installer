@@ -20,7 +20,7 @@ This is a crude set of ansible roles that will take a clean Ubuntu (16.04 LTS wa
 
 ***
 
-> **Note this must be for a non-root user use `adduser` on the target machine to create a user
+> **Note this must be for a non-root user, use `adduser` on the target machine to create a user
 
 > **You will also need to ensure this user is part of the sudo group
 
@@ -46,6 +46,7 @@ ip_address_or_host_name_here
 > Install the required roles
 
 `ansible-galaxy install jdauphant.nginx`
+`ansible-galaxy install stackbuilders.certbot`
 
 > Configure variables in vars/vars.yml
 
