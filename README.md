@@ -60,6 +60,8 @@ db_name: invoiceninja
 
 # lets encrypt email address
 letsencrypt_email: ''
+
+# web address ie: example.com
 server_name: ''
 ```
 
