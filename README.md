@@ -57,6 +57,10 @@ user: david
 db_user: invoiceninja
 db_password: adminpwd
 db_name: invoiceninja
+
+# lets encrypt email address
+letsencrypt_email: ''
+server_name: ''
 ```
 
 > Run the playbook and wait for it to complete
