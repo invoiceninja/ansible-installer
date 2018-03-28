@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/invoiceninja/ansible-installer.png?branch=master)](https://travis-ci.org/invoiceninja/ansible-installer)
 # ansible-installer - The easiest way to install Invoice Ninja!
 
+# HTTP ONLY - Use master branch for HTTPS!!!
+
 ---
 
 This is a crude set of ansible roles that will take a clean Ubuntu (16.04 LTS was used for testing) server and install Invoice Ninja and all of its dependencies.
