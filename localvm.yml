@@ -8,6 +8,11 @@
   vars_files:
     - vars/vars.yml
   pre_tasks:
+  - name: Verify Ansible meets the installers version requirements.
+    assert:
+      that: "ansible_version.full | version_compare('2.5', '>=')"
+      msg: >
+        "You must update Ansible to at least 2.5 to use this version of the installer."
   - name: apt-get clean
     shell: apt-get clean
   - name: Set firewall default policy
