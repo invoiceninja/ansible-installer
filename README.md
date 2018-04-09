@@ -34,7 +34,7 @@ This is a crude set of ansible roles that will take a clean Ubuntu (16.04 LTS wa
 
 > Create a host file for ansible on your local machine
 
-`sudo vim /etc/ansibles/hosts`
+`sudo vim /etc/ansible/hosts`
 
 > Host file should look like this
 
@@ -46,6 +46,7 @@ ip_address_or_host_name_here
 > Install the required roles
 
 `ansible-galaxy install jdauphant.nginx`
+
 `ansible-galaxy install stackbuilders.certbot`
 
 > Configure variables in vars/vars.yml
