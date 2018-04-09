@@ -23,6 +23,8 @@
     ufw: rule=allow port=80
   - name: Allow traffic to hit port 443
     ufw: rule=allow port=443
+  - name: Create Root Path for SSL certs
+    file: path=/etc/nginx/ssl state=directory
   roles:
   - basic
   - php
