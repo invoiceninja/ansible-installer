@@ -23,8 +23,6 @@
     ufw: rule=allow port=80
   - name: Allow traffic to hit port 443
     ufw: rule=allow port=443
-  - name: Create Root Path for SSL certs
-    file: path=/etc/nginx/ssl state=directory
   roles:
   - basic
   - php
@@ -38,8 +36,18 @@
      - worker_connections 1024
      - multi_accept on
     nginx_sites:
+     default:
+         - listen 80
+         - server_name _
+         - root "/usr/share/nginx/html"
+         - index index.html
+  - role: stackbuilders.certbot
+    certbot_domains: "{{ server_name }}"
+    certbot_email: "{{ letsencrypt_email }}"
+  - role: jdauphant.nginx
+    nginx_user: "www-data"
+    nginx_sites:
      invoiceninja:
-         #- listen 80
          - listen 443 ssl
          - ssl_protocols TLSv1 TLSv1.1 TLSv1.2
          - ssl_ciphers HIGH:!aNULL:!MD5
@@ -47,9 +55,9 @@
          - ssl_certificate /etc/nginx/ssl/{{ server_name }}/fullchain.pem
          - ssl_certificate_key /etc/nginx/ssl/{{ server_name }}/privkey.pem
          - root /srv/www/invoiceninja.com/public
-         #- access_log /srv/www/invoiceninja.com/logs/invoice.ninja.access.log
-         #- error_log /srv/www/invoiceninja.com/logs/invoice.ninja.error.log
-         - index index.php index.html index.htm 
+          #- access_log /srv/www/invoiceninja.com/logs/invoice.ninja.access.log
+          #- error_log /srv/www/invoiceninja.com/logs/invoice.ninja.error.log
+         - index index.php index.html index.htm
          - location / { try_files $uri $uri/ =404; }
          - if (!-e $request_filename) { rewrite ^(.+)$ /index.php?q=$1 last; }
          - location ~* /logo/.*\.php$ { return 503; }
@@ -59,9 +67,6 @@
            fastcgi_pass unix:/run/php/php7.0-fpm.sock;
            }
          - location ~ /\.ht { deny all; }
-  - role: stackbuilders.certbot
-    certbot_domains: "{{ server_name }}"
-    certbot_email: "{{ letsencrypt_email }}"
   - role: logrotate
     logrotate_scripts:
       - name: nginx
