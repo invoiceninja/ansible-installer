@@ -65,6 +65,10 @@ letsencrypt_email: ''
 
 # web address ie: example.com
 server_name: ''
+
+# you can also change the repo branch, default is set to master
+
+git_branch: 'master'
 ```
 
 > Run the playbook and wait for it to complete

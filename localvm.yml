@@ -38,13 +38,15 @@
     nginx_sites:
      default:
          - listen 80
-         - server_name _
-         - root "/usr/share/nginx/html"
+         - server_name {{ server_name }}
+         - root /srv/www/invoiceninja.com/public
          - index index.html
   - role: stackbuilders.certbot
+    tags: ssl
     certbot_domains: "{{ server_name }}"
     certbot_email: "{{ letsencrypt_email }}"
   - role: jdauphant.nginx
+    tags: ssl
     nginx_user: "www-data"
     nginx_sites:
      default:
@@ -123,8 +125,7 @@
         dest=/srv/www/invoiceninja.com
         repo=https://github.com/invoiceninja/invoiceninja.git
         update=yes
-      #sudo: yes
-      #sudo_user: www-data
+        version={{ git_branch }}
     - name: Create Root Path for web directory
       file: path=/srv/www/invoiceninja.com/logs state=directory
     - name: Create Access log
