@@ -83,4 +83,4 @@ git_branch: 'master'
 ## Other ansible resources
 * If this script doesn't fit your needs, check out the following ansible roles that are designed for Invoice Ninja
 
--https://gitlab.com/ArjonBu/ansible-invoiceninja-role
+https://gitlab.com/ArjonBu/ansible-invoiceninja-role
