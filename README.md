@@ -65,6 +65,10 @@ letsencrypt_email: ''
 
 # web address ie: example.com
 server_name: ''
+
+# you can also change the repo branch, default is set to master
+
+git_branch: 'master'
 ```
 
 > Run the playbook and wait for it to complete
@@ -75,3 +79,8 @@ server_name: ''
 
 ## Issues
 * I am by no means an expert with ansible, if you see an issue, please PR.
+
+## Other ansible resources
+* If this script doesn't fit your needs, check out the following ansible roles that are designed for Invoice Ninja
+
+https://gitlab.com/ArjonBu/ansible-invoiceninja-role

@@ -11,4 +11,9 @@ db_name: invoiceninja
 
 # lets encrypt email address
 letsencrypt_email: ''
+
+# qualified domain name
 server_name: ''
+
+# invoice ninja GIT branch: default = master | develop
+git_branch: 'master'
