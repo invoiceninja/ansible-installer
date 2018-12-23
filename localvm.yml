@@ -37,7 +37,7 @@
      - multi_accept on
     nginx_sites:
      default:
-         - listen 80
+         - listen [::]:80
          - server_name _
          - root "/usr/share/nginx/html"
          - index index.html
@@ -64,7 +64,7 @@
          - |
            location ~ \.php$ {
            include snippets/fastcgi-php.conf;
-           fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+           fastcgi_pass unix:/run/php/php7.1-fpm.sock;
            }
          - location ~ /\.ht { deny all; }
   - role: logrotate
@@ -106,13 +106,13 @@
           - copytruncate
   post_tasks:
     - name: Modify PHP.INI - set memory limit
-      lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp='(.*)memory_limit =' line='memory_limit = 256M'
+      lineinfile: dest=/etc/php/7.1/fpm/php.ini regexp='(.*)memory_limit =' line='memory_limit = 256M'
     - name: Modify PHP.INI - set POST FILE LIMIT SIZE
-      lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp='(.*)post_max_size =' line='post_max_size = 30M'
+      lineinfile: dest=/etc/php/7.1/fpm/php.ini regexp='(.*)post_max_size =' line='post_max_size = 30M'
     - name: Modify PHP pool variable - slowlog
-      lineinfile: dest=/etc/php/7.0/fpm/pool.d/www.conf  regexp='(.*);slowlog = log/$pool.log.slow' line='slowlog = /var/log/$pool-php-slow.log'
+      lineinfile: dest=/etc/php/7.1/fpm/pool.d/www.conf  regexp='(.*);slowlog = log/$pool.log.slow' line='slowlog = /var/log/$pool-php-slow.log'
     - name: Modify PHP pool variable - slowlog enable
-      lineinfile: dest=/etc/php/7.0/fpm/pool.d/www.conf  regexp='(.*);request_slowlog_timeout = 0' line='request_slowlog_timeout = 5s'
+      lineinfile: dest=/etc/php/7.1/fpm/pool.d/www.conf  regexp='(.*);request_slowlog_timeout = 0' line='request_slowlog_timeout = 5s'
     - name: Clone Invoice Ninja Repo
       git: >
         dest=/srv/www/invoiceninja.com
@@ -153,5 +153,5 @@
     - name: restart nginx
       service: name=nginx state=restarted
     - name: restart php
-      service: name=php7.0-fpm state=restarted
+      service: name=php7.1-fpm state=restarted
  
